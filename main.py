@@ -21,7 +21,7 @@ async def gg(user_id, text):
 
 app = Flask(__name__)
 
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/tiktok', methods=['POST', 'GET'])
 def webhook():
 
     try:
