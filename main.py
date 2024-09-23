@@ -18,8 +18,6 @@ async def gg(user_id, text):
 
     await bot.send_message(user_id, f'{text}!')
 
-    return 'sucsess'
-
 
 app = Flask(__name__)
 
@@ -31,10 +29,8 @@ def webhook():
 
         asyncio.get_event_loop().run_until_complete(gg(5779182088, str(data)))
 
-        return 'sucsess'
     except Exception as e:
         asyncio.get_event_loop().run_until_complete(gg(5779182088, str(e)))
-        return 'warning' 
 
 
     try:
@@ -42,10 +38,9 @@ def webhook():
 
         asyncio.get_event_loop().run_until_complete(gg(5779182088, str(data)))
 
-        return 'sucsess'
+   
     except Exception as e:
         asyncio.get_event_loop().run_until_complete(gg(5779182088, str(e)))
-        return 'warning' 
 
 
 
