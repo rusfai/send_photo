@@ -25,15 +25,6 @@ app = Flask(__name__)
 
 @app.route('/', methods=['POST', 'GET'])
 def webhook():
-    try:
-        data = request.get_json(force=False, silent=False, cache=True)
-
-        asyncio.get_event_loop().run_until_complete(gg(5779182088, str(data)))
-
-        return 'sucsess'
-    except Exception as e:
-        asyncio.get_event_loop().run_until_complete(gg(5779182088, str(e)))
-        return 'warning' 
 
     try:
         data = request.args.get("tiktok")
@@ -44,6 +35,18 @@ def webhook():
     except Exception as e:
         asyncio.get_event_loop().run_until_complete(gg(5779182088, str(e)))
         return 'warning' 
+
+
+    try:
+        data = request.get_json(force=False, silent=False, cache=True)
+
+        asyncio.get_event_loop().run_until_complete(gg(5779182088, str(data)))
+
+        return 'sucsess'
+    except Exception as e:
+        asyncio.get_event_loop().run_until_complete(gg(5779182088, str(e)))
+        return 'warning' 
+
 
 
 
