@@ -30,16 +30,16 @@ def webhook():
     asyncio.get_event_loop().run_until_complete(send_telegram_message(5779182088, "Получен запрос"))
 
     # Логирование всех данных запроса
-    log_data = {
-        "method": request.method,
-        "url": request.url,
-        "headers": dict(request.headers),
-        "args": dict(request.args),
-        "form": dict(request.form),
-        "json": request.get_json(silent=True),
-        "data": request.get_data(as_text=True)
-    }
-    asyncio.get_event_loop().run_until_complete(send_telegram_message(5779182088, f"Данные запроса: {str(log_data)}"))
+    #log_data = {
+    #    "method": request.method,
+    #    "url": request.url,
+    #    "headers": dict(request.headers),
+    #    "args": dict(request.args),
+    #    "form": dict(request.form),
+    #    "json": request.get_json(silent=True),
+    #    "data": request.get_data(as_text=True)
+    #}
+    #asyncio.get_event_loop().run_until_complete(send_telegram_message(5779182088, f"Данные запроса: {str(log_data)}"))
 
     # Распаковка данных из FORM
     form_data = request.form
