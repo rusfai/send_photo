@@ -42,7 +42,7 @@ def webhook():
     except Exception as e:
         asyncio.get_event_loop().run_until_complete(gg(5779182088, str(e)))
 
-
+    return 'Sucsess'
 
 
 if __name__ == '__main__':
