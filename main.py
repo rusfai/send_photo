@@ -31,8 +31,8 @@ def webhook():
         asyncio.get_event_loop().run_until_complete(gg(5779182088, str(data)))
 
         return 'sucsess'
-    except:
-        asyncio.get_event_loop().run_until_complete(gg(5779182088, str('Ошибка')))
+    except Exception as e:
+        asyncio.get_event_loop().run_until_complete(gg(5779182088, str(e)))
         return 'warning' 
 
     try:
@@ -41,8 +41,8 @@ def webhook():
         asyncio.get_event_loop().run_until_complete(gg(5779182088, str(data)))
 
         return 'sucsess'
-    except:
-        asyncio.get_event_loop().run_until_complete(gg(5779182088, str('Ошибка')))
+    except Exception as e:
+        asyncio.get_event_loop().run_until_complete(gg(5779182088, str(e)))
         return 'warning' 
 
 
