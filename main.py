@@ -3,7 +3,7 @@ from flask import Flask, jsonify, request, redirect
 
 app = Flask(__name__)
 
-@app.route('/tiktok', methods=['POST', 'GET'])
+@app.route('/', methods=['POST', 'GET'])
 def webhook():
     try:
         data = request.get_json(force=False, silent=False, cache=True)
