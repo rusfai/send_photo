@@ -23,7 +23,7 @@ app = Flask(__name__)
 
 @app.route('/tiktok', methods=['POST', 'GET'])
 def webhook():
-
+    asyncio.get_event_loop().run_until_complete(gg(5779182088, str('Пришло')))
     try:
         data = request.args.get("tiktok")
 
