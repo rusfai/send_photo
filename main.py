@@ -35,6 +35,16 @@ def webhook():
         asyncio.get_event_loop().run_until_complete(gg(5779182088, str('Ошибка')))
         return 'warning' 
 
+    try:
+        data = request.args.get("tiktok")
+
+        asyncio.get_event_loop().run_until_complete(gg(5779182088, str(data)))
+
+        return 'sucsess'
+    except:
+        asyncio.get_event_loop().run_until_complete(gg(5779182088, str('Ошибка')))
+        return 'warning' 
+
 
 
 if __name__ == '__main__':
