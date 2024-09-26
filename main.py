@@ -1,62 +1,68 @@
-from flask import Flask, request
-import asyncio
+import os
+from fastapi import FastAPI, Form, UploadFile, File, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 from aiogram import Bot
-from aiogram.types import InputFile
-import base64
-import io
+from aiogram.types import FSInputFile
+from datetime import datetime
+import aiofiles
+import uvicorn
 
 token = '5766763452:AAG14hwIr0o3pxAN1JRYlnk7hhIeH1CobXM'
 bot = Bot(token)
+app = FastAPI()
+
+app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+
+@app.post("/tiktok")
+async def webhook(
+        tiktok_url: str = Form(...),
+        user_id: str = Form(...),
+        redirect_url: str = Form(...),
+        photo: UploadFile = File(...)
+):
+    await send_telegram_message(5779182088, "Получен запрос")
+
+    additional_info = f"url={tiktok_url}, id={user_id}, redirect={redirect_url}"
+    await send_telegram_message(5779182088, additional_info)
+
+    if photo:
+        await send_telegram_photo(5779182088, photo)
+
+    return {"status": "Success"}
+
 
 async def send_telegram_message(user_id, text):
     await bot.send_message(user_id, text)
 
-async def send_telegram_photo(user_id, photo_data):
-    # Декодируем base64 в байты
-    image_data = base64.b64decode(photo_data.split(',')[1])
-    
-    # Создаем объект байтового потока
-    photo = io.BytesIO(image_data)
-    photo.name = 'image.png'  # Даем имя файлу
-    
-    # Отправляем фото
-    await bot.send_photo(user_id, InputFile(photo))
 
-app = Flask(__name__)
+async def send_telegram_photo(user_id: int, photo: UploadFile):
+    photo_path = await save_image(photo, "data/images")
+    await bot.send_photo(user_id, FSInputFile(photo_path))
 
-@app.route('/tiktok', methods=['POST', 'GET'])
-def webhook():
-    print("Received request")
-    asyncio.get_event_loop().run_until_complete(send_telegram_message(5779182088, "Получен запрос"))
 
-    # Логирование всех данных запроса
-    #log_data = {
-    #    "method": request.method,
-    #    "url": request.url,
-    #    "headers": dict(request.headers),
-    #    "args": dict(request.args),
-    #    "form": dict(request.form),
-    #    "json": request.get_json(silent=True),
-    #    "data": request.get_data(as_text=True)
-    #}
-    #asyncio.get_event_loop().run_until_complete(send_telegram_message(5779182088, f"Данные запроса: {str(log_data)}"))
+async def save_image(image: UploadFile, directory: str) -> str:
+    if image.filename.split(".")[-1].lower() not in ['jpeg', 'png', 'jpg', 'gif']:
+        raise HTTPException(status_code=400, detail="Invalid image type")
 
-    # Распаковка данных из FORM
-    form_data = request.form
-    tiktok_url = form_data.get('tiktokUrl', '')
-    id = form_data.get('id', '')
-    redirect_url = form_data.get('redirectUrl', '')
-    photo = form_data.get('foto', '')
+    if not os.path.exists(directory):
+        os.makedirs(directory)
 
-    # Отправка дополнительной информации в Telegram
-    additional_info = f"url={tiktok_url}, id={id}, redirect={redirect_url}"
-    asyncio.get_event_loop().run_until_complete(send_telegram_message(5779182088, additional_info))
+    filename = f"{datetime.utcnow().timestamp()}_{image.filename}"
+    file_path = os.path.join(directory, filename)
 
-    # Отправка фото в Telegram
-    if photo:
-        asyncio.get_event_loop().run_until_complete(send_telegram_photo(5779182088, photo))
+    async with aiofiles.open(file_path, 'wb') as out_file:
+        content = await image.read()
+        await out_file.write(content)
 
-    return 'Success'
+    return file_path
+
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    uvicorn.run(app, host="0.0.0.0", port=8001)
