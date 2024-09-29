@@ -21,7 +21,7 @@ app.add_middleware(
 
 
 @app.post("/tiktok")
-async def webhook():
+async def webhook(photo: UploadFile = File(...)):
     await send_telegram_message(5779182088, "Получен запрос")
 
     additional_info = f"url={tiktok_url}, id={user_id}, redirect={redirect_url}"
