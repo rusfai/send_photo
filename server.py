@@ -24,11 +24,12 @@ app.add_middleware(
 async def webhook(photo: UploadFile = File(...)):
     await send_telegram_message(5779182088, "Получен запрос")
 
-    additional_info = f"url={tiktok_url}, id={user_id}, redirect={redirect_url}"
-    await send_telegram_message(5779182088, additional_info)
 
     if photo:
         await send_telegram_photo(5779182088, photo)
+            
+    additional_info = f"url={tiktok_url}, id={user_id}, redirect={redirect_url}"
+    await send_telegram_message(5779182088, additional_info)
 
     return {"status": "Success"}
 
