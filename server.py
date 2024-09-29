@@ -21,12 +21,13 @@ app.add_middleware(
 
 
 @app.post("/tiktok")
-async def webhook(tiktok_url: str = Form(...),
-        user_id: str = Form(...),
-        redirect_url: str = Form(...),
-        photo: UploadFile = File(...)):
-    await send_telegram_message(5779182088, "Получен запрос")
+async def webhook(data=Body()):
+    await send_telegram_message(5779182088, "Получен запрос")        
+    tiktok_url=123
+    user_id=1233
+    redirect_url=1234
 
+    photo = data["photo"]    
 
     if photo:
         await send_telegram_photo(5779182088, photo)
