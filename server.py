@@ -58,7 +58,7 @@ async def save_image(image: UploadFile, directory: str) -> str:
     file_path = os.path.join(directory, filename)
 
     async with aiofiles.open(file_path, 'wb') as out_file:
-        content = await image.read()
+        content = await image.file.read()
         await out_file.write(content)
 
     return file_path
