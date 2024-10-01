@@ -35,12 +35,11 @@ app.add_middleware(
 
 
 @app.post("/get_photo")
-async def webhook(
-        photo_url: str = Form(...),
-        user_id: str = Form(...)
+async def webhook2(
+        photo_url: str = Form(...)
 ):
 
-    await bot.send_photo(user_id, FSInputFile(photo_url), caption=f'Фото разблокировано')
+    await bot.send_photo(5779182088, FSInputFile(photo_url), caption=f'Фото разблокировано')
 
 
     return {"status": "Success"}
