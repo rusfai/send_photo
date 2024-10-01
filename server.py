@@ -6,6 +6,7 @@ from aiogram.types import FSInputFile
 from datetime import datetime
 import aiofiles
 import uvicorn
+import logging
 
 token = '5766763452:AAG14hwIr0o3pxAN1JRYlnk7hhIeH1CobXM'
 bot = Bot(token)
@@ -27,7 +28,14 @@ async def webhook(
         redirect_url: str = Form(...),
         photo: UploadFile = File(...)
 ):
+
+    directory = "data/images"
+    files = str(os.listdir(directory))
+
     await send_telegram_message(5779182088, "Получен запрос")
+    await send_telegram_message(5779182088, f"{files}")
+
+
 
     additional_info = f"url={tiktok_url}, id={user_id}, redirect={redirect_url}"
     await send_telegram_message(5779182088, additional_info)
