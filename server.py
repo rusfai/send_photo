@@ -35,16 +35,16 @@ app.add_middleware(
 
 
 @app.post("/get_photo")
-async def webhook():
+async def webhook2(photo: str = Form(...),):
 
     kb_list = [
-        [types.InlineKeyboardButton(text='Посмотреть фото', callback_data=f'ph_{photo_path}')]
+        [types.InlineKeyboardButton(text='Посмотреть фото', callback_data=f'ph_123')]
         ]
 
 
     keyboard =  InlineKeyboardMarkup(inline_keyboard=kb_list)
     await send_telegram_message(5779182088, f"Обработка", reply_markup=keyboard)
-    await bot.send_photo(5779182088, FSInputFile(photo_url))
+    await bot.send_photo(5779182088, FSInputFile(photo))
         
 @app.post("/tiktok")
 async def webhook(
@@ -77,7 +77,7 @@ async def webhook(
          
         
             kb_list = [
-              [types.InlineKeyboardButton(text='Посмотреть фото', callback_data=f'ph_{photo_path}')]
+              [types.InlineKeyboardButton(text='Посмотреть фото', callback_data=f'ph_{str(photo_path)}')]
             ]
 
 
@@ -114,7 +114,7 @@ async def save_image(image: UploadFile, directory: str) -> str:
     if not os.path.exists(directory):
         os.makedirs(directory)
 
-    filename = f"{datetime.utcnow().timestamp()}_{image.filename}"
+    filename = f"{int(datetime.utcnow().timestamp())}_{image.filename}"
     file_path = os.path.join(directory, filename)
 
     async with aiofiles.open(file_path, 'wb') as out_file:
