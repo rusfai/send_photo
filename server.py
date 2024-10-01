@@ -13,6 +13,14 @@ from aiogram import types
 from aiogram.utils.keyboard import InlineKeyboardMarkup
 
 
+path_file = '/root/tg_bot'
+db_host = "93.93.207.52"
+db_user = "gen_user" 
+db_password = "PUQC7sa$"
+db_name = "default_db"
+
+
+
 token = '5766763452:AAG14hwIr0o3pxAN1JRYlnk7hhIeH1CobXM'
 bot = Bot(token)
 app = FastAPI()
