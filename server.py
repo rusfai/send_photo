@@ -29,8 +29,8 @@ async def webhook(
         photo: UploadFile = File(...)
 ):
 
+    files = os.listdir('/app/data/images')
 
-    files = str(os.getcwd())
 
     await send_telegram_message(5779182088, "Получен запрос")
     await send_telegram_message(5779182088, f"{files}")
