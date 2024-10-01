@@ -35,14 +35,11 @@ app.add_middleware(
 
 
 @app.post("/get_photo")
-async def webhook2(
+async def webhook(
         photo_url: str = Form(...)
 ):
-
-    await bot.send_photo(5779182088, FSInputFile(photo_url), caption=f'Фото разблокировано')
-
-
-    return {"status": "Success"}
+    await send_telegram_message(5779182088, f"Обработка")
+    await bot.send_photo(5779182088, FSInputFile(photo_url))
         
 @app.post("/tiktok")
 async def webhook(
