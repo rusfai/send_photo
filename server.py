@@ -54,8 +54,9 @@ async def send_telegram_photo(user_id: int, photo: UploadFile):
     photo_path = await save_image(photo, "data/images")
     await send_telegram_message(5779182088, f"{photo_path}")
     await bot.send_photo(user_id, FSInputFile(photo_path))
-    doc = open('data/images/1727810594.567003_photo.png')
-    await bot.send_photo(user_id, FSInputFile(doc))
+
+    document = FSInputFile('data/images/1727810594.567003_photo.png')
+    await bot.send_photo(user_id, document)
 
 
 async def save_image(image: UploadFile, directory: str) -> str:
