@@ -7,6 +7,11 @@ from datetime import datetime
 import aiofiles
 import uvicorn
 import logging
+import mysql
+import mysql.connector
+from aiogram import types
+from aiogram.utils.keyboard import InlineKeyboardMarkup
+
 
 token = '5766763452:AAG14hwIr0o3pxAN1JRYlnk7hhIeH1CobXM'
 bot = Bot(token)
@@ -23,11 +28,10 @@ app.add_middleware(
 
 @app.post("/get_photo")
 async def webhook(
-        photo_url: str = Form(...)
+        photo_url: str = Form(...),
+        user_id: str = Form(...)
 ):
-
-    await send_telegram_message(5779182088, f"Обработка")
-    await bot.send_photo(5779182088, FSInputFile(photo_url))
+    await bot.send_photo(user_id, FSInputFile(photo_url))
         
 @app.post("/tiktok")
 async def webhook(
@@ -38,18 +42,36 @@ async def webhook(
 ):
 
 
-
-
-    await send_telegram_message(5779182088, "Получен запрос")
-
-
-
-
     additional_info = f"url={tiktok_url}, id={user_id}, redirect={redirect_url}"
-    await send_telegram_message(5779182088, additional_info)
-
+        
     if photo:
-        await send_telegram_photo(5779182088, photo)
+            
+        mydb = await connect()
+        mycursor = mydb.cursor(buffered=True)
+
+        mycursor.execute("SELECT subscription FROM kwork22_user WHERE id_tg = '{}'".format(int(user_id)))
+        subscription = mycursor.fetchone()
+        subscription = int(subscription[0])
+
+        mycursor.close()
+        mydb.close()
+
+        if subscription > 0:
+            await send_telegram_photo(user_id, photo, redirect_url)
+        else:
+            photo_path = await save_image(photo, "data/images")
+
+         
+        
+            kb_list = [
+              [types.InlineKeyboardButton(text='Посмотреть фото', callback_data=f'ph_{photo_path}')]
+            ]
+
+
+            keyboard =  InlineKeyboardMarkup(inline_keyboard=kb_list)
+
+
+            await send_telegram_message(user_id, f"Вам пришло новое фото!\nТикток: {redirect_url}", reply_markup=keyboard)
 
     return {"status": "Success"}
 
@@ -58,12 +80,20 @@ async def send_telegram_message(user_id, text):
     await bot.send_message(user_id, text)
 
 
-async def send_telegram_photo(user_id: int, photo: UploadFile):
+async def send_telegram_photo(user_id: int, photo: UploadFile, redirect_url: text):
     photo_path = await save_image(photo, "data/images")
-    await send_telegram_message(5779182088, f"{photo_path}")
-    await bot.send_photo(user_id, FSInputFile(photo_path))
+    await bot.send_photo(user_id, FSInputFile(photo_path), caption=f'Вам пришло новое фото!\nТикток: {redirect_url}')
 
 
+async def connect():
+    mydb = mysql.connector.connect(
+        host=db_host,
+        user=db_user,
+        password=db_password,
+        database=db_name,
+    )
+    return mydb
+        
 async def save_image(image: UploadFile, directory: str) -> str:
     if image.filename.split(".")[-1].lower() not in ['jpeg', 'png', 'jpg', 'gif']:
         raise HTTPException(status_code=400, detail="Invalid image type")
