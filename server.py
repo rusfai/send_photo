@@ -27,7 +27,7 @@ async def webhook(
 ):
 
     await send_telegram_message(5779182088, f"Обработка")
-    await bot.send_photo(user_id, FSInputFile(photo_url))
+    await bot.send_photo(5779182088, FSInputFile(photo_url))
         
 @app.post("/tiktok")
 async def webhook(
