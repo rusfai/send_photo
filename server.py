@@ -84,8 +84,8 @@ async def webhook(
     return {"status": "Success"}
 
 
-async def send_telegram_message(user_id, text):
-    await bot.send_message(user_id, text)
+async def send_telegram_message(user_id, text, reply_markup):
+    await bot.send_message(user_id, text, reply_markup=reply_markup)
 
 
 async def send_telegram_photo(user_id, photo, redirect_url):
