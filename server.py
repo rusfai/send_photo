@@ -21,6 +21,14 @@ app.add_middleware(
     )
 
 
+@app.post("/get_photo")
+async def webhook(
+        photo_url: str = Form(...)
+):
+
+    await send_telegram_message(5779182088, f"Обработка")
+    await bot.send_photo(user_id, FSInputFile(photo_url))
+        
 @app.post("/tiktok")
 async def webhook(
         tiktok_url: str = Form(...),
@@ -54,9 +62,6 @@ async def send_telegram_photo(user_id: int, photo: UploadFile):
     photo_path = await save_image(photo, "data/images")
     await send_telegram_message(5779182088, f"{photo_path}")
     await bot.send_photo(user_id, FSInputFile(photo_path))
-
-    document = FSInputFile('/data/images/1727810594.567003_photo.png')
-    await bot.send_photo(user_id, document)
 
 
 async def save_image(image: UploadFile, directory: str) -> str:
