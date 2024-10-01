@@ -85,12 +85,12 @@ async def webhook(
 
 
 async def send_telegram_message(user_id, text, reply_markup):
-    await bot.send_message(user_id, text, reply_markup=reply_markup)
+    await bot.send_message(user_id, text, reply_markup=reply_markup, disable_web_page_preview=True)
 
 
 async def send_telegram_photo(user_id, photo, redirect_url):
     photo_path = await save_image(photo, "data/images")
-    await bot.send_photo(user_id, FSInputFile(photo_path), caption=f'Вам пришло новое фото!\nТикток: {redirect_url}')
+    await bot.send_photo(user_id, FSInputFile(photo_path), caption=f'Вам пришло новое фото!\nТикток: {redirect_url}', disable_web_page_preview=True)
 
 
 async def connect():
