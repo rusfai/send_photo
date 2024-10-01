@@ -36,7 +36,14 @@ app.add_middleware(
 
 @app.post("/get_photo")
 async def webhook():
-    await send_telegram_message(5779182088, f"Обработка")
+
+    kb_list = [
+        [types.InlineKeyboardButton(text='Посмотреть фото', callback_data=f'ph_{photo_path}')]
+        ]
+
+
+    keyboard =  InlineKeyboardMarkup(inline_keyboard=kb_list)
+    await send_telegram_message(5779182088, f"Обработка", reply_markup=keyboard)
     await bot.send_photo(5779182088, FSInputFile(photo_url))
         
 @app.post("/tiktok")
