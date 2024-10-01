@@ -40,6 +40,7 @@ async def webhook(
         user_id: str = Form(...)
 ):
     await bot.send_photo(user_id, FSInputFile(photo_url))
+    return {"status": "Success"}
         
 @app.post("/tiktok")
 async def webhook(
