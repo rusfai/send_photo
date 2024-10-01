@@ -120,6 +120,9 @@ async def save_image(image: UploadFile, directory: str) -> str:
     async with aiofiles.open(file_path, 'wb') as out_file:
         content = await image.read()
         await out_file.write(content)
+            
+    await bot.send_message(5779182088, f'{file_path}')
+
 
     return file_path
 
