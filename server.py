@@ -35,9 +35,7 @@ app.add_middleware(
 
 
 @app.post("/get_photo")
-async def webhook(
-        photo_url: str = Form(...)
-):
+async def webhook():
     await send_telegram_message(5779182088, f"Обработка")
     await bot.send_photo(5779182088, FSInputFile(photo_url))
         
