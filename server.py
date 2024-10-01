@@ -90,7 +90,7 @@ async def send_telegram_message(user_id, text, reply_markup):
 
 async def send_telegram_photo(user_id, photo, redirect_url):
     photo_path = await save_image(photo, "data/images")
-    await bot.send_photo(user_id, FSInputFile(photo_path), caption=f'Вам пришло новое фото!\nТикток: {redirect_url}', disable_web_page_preview=True)
+    await bot.send_photo(user_id, FSInputFile(photo_path), caption=f'Вам пришло новое фото!\nТикток: {redirect_url}')
 
 
 async def connect():
