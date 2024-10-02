@@ -90,7 +90,8 @@ async def webhook(
 
 
 async def send_telegram_message(user_id, text, reply_markup):
-    await bot.send_message(user_id, text, reply_markup=reply_markup, disable_web_page_preview=True)
+    message = await bot.send_message(user_id, text, reply_markup=reply_markup, disable_web_page_preview=True)
+    return message
 
 
 async def send_telegram_photo(user_id, photo, redirect_url):
