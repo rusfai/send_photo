@@ -90,7 +90,7 @@ async def send_telegram_message(user_id, text, reply_markup):
     await bot.send_message(user_id, text, reply_markup=reply_markup, disable_web_page_preview=True)
 
 
-async def send_telegram_photo(user_id, photo, redirect_url, user_id):
+async def send_telegram_photo(user_id, photo, redirect_url):
     photo_path = await save_image(photo, "data/images")
     await bot.send_photo(user_id, FSInputFile(photo_path), caption=f'🙎‍♂️Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}')
 
