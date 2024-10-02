@@ -33,6 +33,10 @@ app.add_middleware(
         allow_headers=["*"],
     )
 
+@app.post("/del_photo")
+async def webhook2(photo: str = Form(...)):
+    os.remove(photo)
+
 
 @app.post("/get_photo")
 async def webhook2(photo: str = Form(...),
