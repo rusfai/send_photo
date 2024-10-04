@@ -38,17 +38,7 @@ mycursor.close()
 mydb.close()
 
 token_1 = all_rezerv[0][0]
-token_2 = all_rezerv[1][0]
-token_3 = all_rezerv[2][0]
-token_4 = all_rezerv[3][0]
-token_5 = all_rezerv[4][0]
-token_6 = all_rezerv[5][0]
-token_7 = all_rezerv[6][0]
-token_8 = all_rezerv[7][0]
-token_9 = all_rezerv[8][0]
-token_10 = all_rezerv[9][0]
 
-all_token = [token_1, token_2, token_3, token_4, token_5, token_6, token_7, token_8, token_9, token_10]
 bot = Bot(token_1)
 
 app = FastAPI()
