@@ -26,6 +26,7 @@ mydb = mysql.connector.connect(
     password=db_password,
     database=db_name,
 )
+mycursor = mydb.cursor(buffered=True)
 
 mycursor.execute("SELECT * FROM kwork22_rezerv")
 all_rezerv = mycursor.fetchall()
