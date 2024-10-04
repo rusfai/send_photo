@@ -95,7 +95,7 @@ async def webhook(
         if subscription > 0:
 
         
-            await send_telegram_photo(user_id, photo, redirect_url, bot)
+            await send_telegram_photo(user_id, photo, redirect_url)
                  
         else:
             photo_path = await save_image(photo, "data/images")
