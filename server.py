@@ -66,9 +66,10 @@ async def webhook2(photo: str = Form(...)):
 
 @app.post("/get_photo")
 async def webhook2(photo: str = Form(...),
-        user_id: str = Form(...),):
+        user_id: str = Form(...),
+        text: str = Form(...)):
     try:
-        await bot.send_photo(user_id, FSInputFile(photo))
+        await bot.send_photo(user_id, FSInputFile(photo), caption=text)
     except:
         await bot.send_message(user_id, "Срок хранения фото истек")
         
