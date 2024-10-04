@@ -13,11 +13,13 @@ from aiogram import types
 from aiogram.utils.keyboard import InlineKeyboardMarkup
 import time
 
-path_file = '/root/tg_bot'
-db_host = "93.93.207.52"
+
+path_file = '/root'
+db_host = "90.156.226.91"
 db_user = "gen_user" 
-db_password = "PUQC7sa$"
+db_password = "_q-W>q*5fn~:{y"
 db_name = "default_db"
+
 
 
 mydb = mysql.connector.connect(
