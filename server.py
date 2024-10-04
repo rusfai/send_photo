@@ -120,11 +120,15 @@ async def send_telegram_message(user_id, text, reply_markup, bot):
 async def send_telegram_photo(user_id, photo, redirect_url, bot):
     photo_path = await save_image(photo, "data/images")
     message = await bot.send_photo(user_id, FSInputFile(photo_path), caption=f'🙎‍♂️Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}')
+
+    mydb = await connect()
+    mycursor = mydb.cursor(buffered=True)
         
     mycursor.execute("INSERT INTO kwork22_photo (url, photo_time, user_id, message_id)  VALUES ('{}', '{}', '{}', '{}')".format(photo_path, int(time.time()), int(user_id), 0))
     mydb.commit() 
-    
 
+    mycursor.close()
+    mydb.close()
 
 async def connect():
     mydb = mysql.connector.connect(
