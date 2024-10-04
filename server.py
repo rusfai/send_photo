@@ -104,7 +104,7 @@ async def webhook(
                 if token:   
                     try:
                         bot = Bot(token)
-                        message = await send_telegram_message(user_id, f"🙎‍♂️Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}", reply_markup=keyboard, bot=bot)
+                        message = await send_telegram_message(user_id=user_id, text=f"🙎‍♂️Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}", reply_markup=keyboard, bot=bot)
                         token_list.append(token)
                         message_list.append(int(message.message_id))
                     except:
