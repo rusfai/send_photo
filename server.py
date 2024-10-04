@@ -21,7 +21,6 @@ db_name = "default_db"
 
 
 
-bot = Bot(token)
 app = FastAPI()
 
 app.add_middleware(
