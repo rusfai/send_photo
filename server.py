@@ -104,7 +104,7 @@ async def webhook(
          
         
             kb_list = [
-              [types.InlineKeyboardButton(text='Открыть фото', callback_data=f'ph!{str(photo_path)}')]
+              [types.InlineKeyboardButton(text='Открыть фото', callback_data=f'ph!{str(photo_path)}!{redirect_url}')]
             ]
 
 
