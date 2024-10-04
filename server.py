@@ -84,7 +84,6 @@ async def webhook(
 
         
             await send_telegram_photo(user_id, photo, redirect_url, bot)
-            await (await bot.get_session()).close()
                  
         else:
             photo_path = await save_image(photo, "data/images")
