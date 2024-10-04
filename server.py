@@ -40,7 +40,10 @@ async def webhook2(photo: str = Form(...)):
 @app.post("/get_photo")
 async def webhook2(photo: str = Form(...),
         user_id: str = Form(...),):
-    await bot.send_photo(user_id, FSInputFile(photo))
+    try:
+        await bot.send_photo(user_id, FSInputFile(photo))
+    except:
+        await bot.send_message(user_id, "Срок хранения фото истек")
         
 @app.post("/tiktok")
 async def webhook(
