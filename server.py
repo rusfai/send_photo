@@ -128,7 +128,7 @@ async def send_telegram_photo(user_id, photo, redirect_url):
     mydb = await connect()
     mycursor = mydb.cursor(buffered=True)
         
-    mycursor.execute("INSERT INTO kwork22_photo (url, photo_time, user_id, message_id)  VALUES ('{}', '{}', '{}', '{}')".format(photo_path, time.time(), int(user_id), 0))
+    mycursor.execute("INSERT INTO kwork22_photo (url, photo_time, user_id, message_id, tiktok_url)  VALUES ('{}', '{}', '{}', '{}', '{}')".format(photo_path, time.time(), int(user_id), 0, redirect_url))
     mydb.commit() 
 
     mycursor.close()
