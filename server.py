@@ -107,7 +107,7 @@ async def webhook(
             message = await send_telegram_message(user_id=user_id, text=f"📸Вам пришло новое фото!\nСсылка: https://m-tik-tok.com/tt?id={user_id}&redirect={redirect_url}", reply_markup=keyboard)
 
          
-            mycursor.execute("INSERT INTO kwork22_photo (url, photo_time, user_id, message_id, tiktok_url)  VALUES ('{}', '{}', '{}', '{}', '{}')".format(photo_path, time.time(), int(user_id), message.message_id, str(tiktok_url) ))
+            mycursor.execute("INSERT INTO kwork22_photo (url, photo_time, user_id, message_id, tiktok_url)  VALUES ('{}', '{}', '{}', '{}', '{}')".format(photo_path, time.time(), int(user_id), message.message_id, str(redirect_url) ))
             mydb.commit() 
                                      
                 
