@@ -20,7 +20,7 @@ db_user = "gen_user"
 db_password = "_q-W>q*5fn~:{y"
 db_name = "default_db"
 
-url_tiktok = 'https://u-tik-tok.ru/tt'
+url_tiktok = 'https://m-tik-tok.com/tt'
 
 mydb = mysql.connector.connect(
     host=db_host,
