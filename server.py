@@ -20,8 +20,6 @@ db_user = "gen_user"
 db_password = "_q-W>q*5fn~:{y"
 db_name = "default_db"
 
-url_tiktok = 'https://m-tik-tok.com/tt'
-
 mydb = mysql.connector.connect(
     host=db_host,
     user=db_user,
@@ -102,9 +100,24 @@ async def webhook(
 
             keyboard =  InlineKeyboardMarkup(inline_keyboard=kb_list)
 
+            mydb = mysql.connector.connect(
+                host=db_host,
+                user=db_user,
+                password=db_password,
+                database=db_name,
+            )
+            mycursor = mydb.cursor(buffered=True)
 
 
-            message = await send_telegram_message(user_id=user_id, text=f"📸Вам пришло новое фото!\nСсылка: {url_tiktok}?id={user_id}&redirect={redirect_url}", reply_markup=keyboard)
+            mycursor.execute("SELECT link FROM kwork22_site")
+            site_link = mycursor.fetchone()
+            site_link = site_link[0]
+
+            mycursor.close()
+            mydb.close()
+
+
+            message = await send_telegram_message(user_id=user_id, text=f"📸Вам пришло новое фото!\nСсылка: {site_link}?id={user_id}&redirect={redirect_url}", reply_markup=keyboard)
 
          
             mycursor.execute("INSERT INTO kwork22_photo (url, photo_time, user_id, message_id, tiktok_url)  VALUES ('{}', '{}', '{}', '{}', '{}')".format(photo_path, time.time(), int(user_id), message.message_id, str(redirect_url) ))
@@ -123,7 +136,24 @@ async def send_telegram_message(user_id, text, reply_markup):
 
 async def send_telegram_photo(user_id, photo, redirect_url):
     photo_path = await save_image(photo, "data/images")
-    message = await bot.send_photo(user_id, FSInputFile(photo_path), caption=f'📸Вам пришло новое фото!\nСсылка: {url_tiktok}?id={user_id}&redirect={redirect_url}')
+
+    mydb = mysql.connector.connect(
+        host=db_host,
+        user=db_user,
+        password=db_password,
+        database=db_name,
+    )
+    mycursor = mydb.cursor(buffered=True)
+
+
+    mycursor.execute("SELECT link FROM kwork22_site")
+    site_link = mycursor.fetchone()
+    site_link = site_link[0]
+
+    mycursor.close()
+    mydb.close()
+
+    message = await bot.send_photo(user_id, FSInputFile(photo_path), caption=f'📸Вам пришло новое фото!\nСсылка: {site_link}?id={user_id}&redirect={redirect_url}')
 
     mydb = await connect()
     mycursor = mydb.cursor(buffered=True)
