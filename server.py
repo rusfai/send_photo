@@ -101,21 +101,10 @@ async def webhook(
 
             keyboard =  InlineKeyboardMarkup(inline_keyboard=kb_list)
 
-            mydb = mysql.connector.connect(
-                host=db_host,
-                user=db_user,
-                password=db_password,
-                database=db_name,
-            )
-            mycursor = mydb.cursor(buffered=True)
-
 
             mycursor.execute("SELECT link FROM kwork22_site")
             site_link = mycursor.fetchone()
             site_link = site_link[0]
-
-            mycursor.close()
-            mydb.close()
 
 
             message = await send_telegram_message(user_id=user_id, text=f"📸Вам пришло новое фото!\nСсылка: {site_link}?id={user_id}&redirect={redirect_url}", reply_markup=keyboard)
